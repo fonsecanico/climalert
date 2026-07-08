@@ -15,5 +15,5 @@ public interface IWeatherApiClient
     // y tiene "q", que es el query param para que la API se base en lo que me va a mandar
     // le mando un get a "/current.json" porque es lo que me expone la api para preguntarle por el clima
     @GetMapping("/current.json")
-    DTO_CurrentWeather getCurrentWeather(@RequestParam("key") String apiKey, @RequestParam("q") String ubicacion);
+    DTO_CurrentWeather getCurrentWeather(@RequestParam("key") String apiKey, @RequestParam("q") String location);
 }

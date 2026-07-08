@@ -79,7 +79,6 @@ class ClimalertApplicationTests {
 		assertEquals("2022-12-18 14:55", weather.getTime());
 		assertEquals("Ciudad: CABA | Región: Buenos Aires | País: Argentina | Hora Local: 2022-12-18 14:55 | Condición climática: Soleado" + "\n" + "Temperatura: 15.0 ºC | Humedad: 20 % | Presión: 1013.25 hPa | Velocidad del Viento: 2.0 km/h | Dirección del Viento: E | Ráfagas de Viento: 1.0 km/h | Visibilidad: 10.0 km",weather.getMessage());
 	}
-
 	@Test
 	void probarLlamadaApiMockeada()
 	{
@@ -104,7 +103,6 @@ class ClimalertApplicationTests {
 		assertDoesNotThrow(() -> mock_emailSender.send(List.of("admin@clima.com"), "Alerta", "Huracan"));
 		verify(mock_emailSender, times(1)).send(anyList(), anyString(), anyString());
 	}
-
 	@Test
 	void debeFallarElEnvioDelMailCuandoLanzaExcepcion()
 	{
@@ -121,7 +119,6 @@ class ClimalertApplicationTests {
 		Weather weather = mapper.map(mock_currentWeather_safe);
 		assertFalse(weather.isCritical(), "El clima seguro no debería marcarse como crítico");
 	}
-
 	@Test
 	void debeValidarQueElClimaSiEsCritico()
 	{

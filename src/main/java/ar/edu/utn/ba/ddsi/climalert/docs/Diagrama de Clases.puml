@@ -1,0 +1,253 @@
+@startuml
+package Clients #CCDDE2
+{
+    interface IWeatherApiClient <<FeignClient>>
+    {
+        + getCurrentWeather(String apiKey, String location): DTO_CurrentWeather
+    }
+    record DTO_CurrentCondition
+    {
+        condition: String
+    }
+    record DTO_CurrentData
+    {
+        temperature: Double
+        humidity: Integer
+        pressure: Double
+        windSpeed: Double
+        windDirection: String
+        windGust: Double
+        visibility: Double
+        currentCondition: DTO_CurrentCondition
+    }
+    record DTO_CurrentLocation
+    {
+        city: String
+        region: String
+        country: String
+        time: String
+    }
+    record DTO_CurrentWeather
+    {
+        currentLocation: DTO_CurrentLocation
+        currentData: DTO_CurrentData
+    }
+}
+
+package Domain #93A3BC
+{
+    class Weather
+    {
+        - id: Long
+        - temperature: Double
+        - humidity: Integer
+        - pressure: Double
+        - windSpeed: Double
+        - windDirection: String
+        - windGust: Double
+        - visibility: Double
+        - condition: String
+        - city: String
+        - region: String
+        - country: String
+        - time: String
+        - message: String
+        - isCritical: boolean
+    }
+    class WeatherBuilder
+    {
+        - temperature: Double
+        - humidity: Integer
+        - pressure: Double
+        - windSpeed: Double
+        - windDirection: String
+        - windGust: Double
+        - visibility: Double
+        - condition: String
+        - city: String
+        - region: String
+        - country: String
+        - time: String
+        - message: String
+        - isCritical: boolean
+        - locationMessage: StringBuilder
+        - dataMessage: StringBuilder
+        - maxTemperature: Double
+        - maxHumidity: Integer
+        + build() : Weather
+    }
+}
+
+package Exceptions #faedcd
+{
+    exception ResourceNotFoundException {}
+    exception SendGridNetworkException {}
+    exception SendGridResponseException {}
+}
+
+package Mappers #e5e5e5
+{
+    interface IMapper<Domain, Response>
+    {
+        + map(Response response): Domain
+    }
+    interface IWeatherMapper implements IMapper<Weather, DTO_CurrentWeather>
+    {
+        + map(DTO_CurrentWeather response): Weather
+    }
+    class WeatherMapper implements IWeatherMapper
+    {
+        - criticalTemperature: String
+        - criticalHumidity: String
+        + map(DTO_CurrentWeather currentWeather): Weather
+    }
+}
+package Providers #caf0f8
+{
+    interface IProvider<Domain>
+    {
+        + provide(): Optional<Domain>
+    }
+    interface IWeatherProvider implements IProvider<Weather>
+    {
+        + provide(): Optional<Weather>
+    }
+    class WeatherProvider implements IWeatherProvider
+    {
+        - client: IWeatherApiClient
+        - mapper: IWeatherMapper
+        - apiKey: String
+        - location: String
+        + provide(): Optional<Weather>
+    }
+}
+package Repositories #778da9
+{
+    interface IRepository<Domain>
+    {
+        + findAll(): List<Domain>
+        + findByID(Long id): Domain
+        + delete(Long id): void
+        + save(Domain entity): Domain
+    }
+    interface IWeatherRepository implements IRepository<Weather>
+    {
+        + findLatestReport(): Optional<Weather>
+    }
+    class Memory_WeatherRepository implements IWeatherRepository
+    {
+        - reports: List<Weather>
+        - idGenerator: IDGenerator
+        + findAll(): List<Weather>
+        + findByID(Long id): Weather
+        + delete(Long id): void
+        + save(Weather weatherReport): Weather
+        + findLatestReport(): Optional<Weather>
+    }
+
+}
+package Schedules #f5cac3
+{
+    class WeatherScheduler
+    {
+        - weatherService: IWeatherReportService
+        + getWeather(): void
+        + checkWeather(): void
+    }
+}
+package Services #a4c3b2
+{
+    package Reports
+    {
+        interface IWeatherReportService
+        {
+            + getWeather(): void
+            + checkWeather(): void
+        }
+        class WeatherReportService implements IWeatherReportService
+        {
+            - weatherProvider: IWeatherProvider
+            - weatherNotificationService: IWeatherNotificationService
+            - weatherRepository: IWeatherRepository
+            + getWeather(): void
+            + checkWeather(): void
+        }
+    }
+    package Notifications
+    {
+        interface IWeatherNotificationService
+        {
+            + notify(Weather weather): void
+        }
+        class WeatherNotificationService implements IWeatherNotificationService
+        {
+            - sender: IEmailSender
+            - addresses: List<String>
+            - subjectPrefix: String
+            + notify(Weather weather)
+        }
+        interface IEmailSender
+        {
+            + send(List<String> addresses, String subject, String body): void
+        }
+        class SendGridEmailSender implements IEmailSender
+        {
+            - senderEmail: String
+            - connector: SendGridConnector
+            - connector: SendGridConnector
+            + send(List<String> addresses, String subject, String body): void
+        }
+        class SendGridConnector
+        {
+            - apiKey: String
+            + send(String sender, String subject, String body, String address): void
+        }
+
+    }
+}
+package Utils
+{
+    class IDGenerator
+    {
+        - next: long
+        + next(): long
+    }
+    class SubjectUtil
+    {
+        + getSubject(String prefix, Weather weather): String
+    }
+}
+
+IWeatherApiClient .d.> DTO_CurrentWeather
+
+DTO_CurrentData *-d-> DTO_CurrentCondition
+DTO_CurrentWeather *-d-> DTO_CurrentLocation
+DTO_CurrentWeather *-d-> DTO_CurrentData
+
+WeatherBuilder .r.> Weather
+
+WeatherMapper ..> DTO_CurrentWeather
+WeatherMapper ..> WeatherBuilder
+WeatherMapper ..> Weather
+
+WeatherProvider --> IWeatherApiClient
+WeatherProvider --> IWeatherMapper
+WeatherProvider ..> DTO_CurrentWeather
+WeatherProvider ..> Weather
+
+WeatherScheduler --> IWeatherReportService : - weatherService
+
+WeatherReportService --> IWeatherProvider : - weatherProvider
+WeatherReportService --> IWeatherNotificationService : - weatherNotificationService
+WeatherReportService --> IWeatherRepository : - weatherRepository
+
+WeatherNotificationService --> IEmailSender : - sender
+WeatherNotificationService ..> Weather : <<use>>
+WeatherNotificationService ..> SubjectUtil : <<use>>
+
+SendGridEmailSender --> SendGridConnector : - connector
+
+Memory_WeatherRepository --> IDGenerator : - idGenerator
+Memory_WeatherRepository *-- Weather : almacena
+
+@enduml
