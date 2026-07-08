@@ -8,9 +8,9 @@ climalert:
   weatherapi:
     url: https://api.weatherapi.com/v1
     location: "-34.6037,-58.3816" # Por requerimiento La ubicación consultada será fija (por ejemplo: CABA). Lo mando entre comillas para que no me interprete esto como una lista y mandarlo como query param
-    api-key: ${WEATHER_API_KEY}
+    api-key: ${WEATHER_API_KEY:mock-key-para-tests}
 sendgrid:
-  api-key: ${SENDGRID_API_KEY}
+  api-key: ${SENDGRID_API_KEY:mock-key-para-tests}
   sender: nicofonsecagiudici@frba.utn.edu.ar
 subject: Alerta climatológica en
 notify: admin@clima.com,emergencias@clima.com,meteorologia@clima.com

@@ -47,6 +47,7 @@ public class Memory_WeatherRepository implements IWeatherRepository
     @Override
     public Optional<Weather> findLatestReport()
     {
+        if (this.reports.isEmpty()) return Optional.empty();
         return Optional.of(reports.getLast());
     }
 }
