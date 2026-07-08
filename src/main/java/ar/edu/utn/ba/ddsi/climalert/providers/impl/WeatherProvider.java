@@ -23,10 +23,10 @@ public class WeatherProvider implements IWeatherProvider {
 
     private final IWeatherApiClient client;
     private final IWeatherMapper mapper;
-    @Value("${climalert.weatherapi.api-key")
-    private final String apiKey;
+    @Value("${climalert.weatherapi.api-key}")
+    private String apiKey;
     @Value("${climalert.weatherapi.location}")
-    private final String location;
+    private String location;
 
     @Override
     public Optional<Weather> provide()

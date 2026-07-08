@@ -5,13 +5,15 @@ import ar.edu.utn.ba.ddsi.climalert.domain.Weather;
 import ar.edu.utn.ba.ddsi.climalert.domain.builder.WeatherBuilder;
 import ar.edu.utn.ba.ddsi.climalert.mappers.interfaces.IWeatherMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+@Component
 public class WeatherMapper implements IWeatherMapper
 {
-    @Value("${climalert.alertas.temperatura-critica}")
-    private Double criticalTemperature;
-    @Value("${climalert.alertas.humedad-critica}")
-    private Integer criticalHumidity;
+    @Value("${climalert.critical-conditions.temperature}")
+    private String criticalTemperature;
+    @Value("${climalert.critical-conditions.humidity}")
+    private String criticalHumidity;
 
     @Override
     public Weather map(DTO_CurrentWeather currentWeather)

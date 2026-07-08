@@ -4,7 +4,7 @@ spring:
 climalert:
   critical-conditions:
     temperature: 35.0
-    humidity: 60.0
+    humidity: 60
   weatherapi:
     url: https://api.weatherapi.com/v1
     location: "-34.6037,-58.3816" # Por requerimiento La ubicación consultada será fija (por ejemplo: CABA). Lo mando entre comillas para que no me interprete esto como una lista y mandarlo como query param

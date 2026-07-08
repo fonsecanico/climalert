@@ -28,10 +28,10 @@ public class WeatherBuilder
     Double maxTemperature;
     Integer maxHumidity;
 
-    public WeatherBuilder(Double maxTemperature, Integer maxHumidity)
+    public WeatherBuilder(String maxTemperature, String maxHumidity)
     {
-        this.maxTemperature = maxTemperature;
-        this.maxHumidity = maxHumidity;
+        this.maxTemperature = Double.parseDouble(maxTemperature);
+        this.maxHumidity = Integer.parseInt(maxHumidity);
     }
 
     public WeatherBuilder withTemperature(Double temperature)
