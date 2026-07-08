@@ -12,4 +12,5 @@ climalert:
 sendgrid:
   api-key: ${SENDGRID_API_KEY}
   sender: nicofonsecagiudici@frba.utn.edu.ar
+subject: Alerta climatológica en
 notify: admin@clima.com,emergencias@clima.com,meteorologia@clima.com

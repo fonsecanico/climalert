@@ -8,6 +8,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class Weather
 {
+    Long id;
     Double temperature;
     Integer humidity;
     Double pressure;

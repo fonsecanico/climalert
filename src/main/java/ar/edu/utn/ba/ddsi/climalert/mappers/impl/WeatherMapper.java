@@ -8,15 +8,10 @@ import org.springframework.beans.factory.annotation.Value;
 
 public class WeatherMapper implements IWeatherMapper
 {
-    private final Double criticalTemperature;
-    private final Integer criticalHumidity;
-
-    public WeatherMapper(
-            @Value("${climalert.alertas.temperatura-critica}") Double maxTemperature,
-            @Value("${climalert.alertas.humedad-critica}") Integer maxHumidity) {
-        this.criticalTemperature = maxTemperature;
-        this.criticalHumidity = maxHumidity;
-    }
+    @Value("${climalert.alertas.temperatura-critica}")
+    private Double criticalTemperature;
+    @Value("${climalert.alertas.humedad-critica}")
+    private Integer criticalHumidity;
 
     @Override
     public Weather map(DTO_CurrentWeather currentWeather)

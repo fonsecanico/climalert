@@ -5,6 +5,7 @@ import ar.edu.utn.ba.ddsi.climalert.clients.interfaces.IWeatherApiClient;
 import ar.edu.utn.ba.ddsi.climalert.domain.Weather;
 import ar.edu.utn.ba.ddsi.climalert.mappers.interfaces.IWeatherMapper;
 import ar.edu.utn.ba.ddsi.climalert.providers.interfaces.IWeatherProvider;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -13,26 +14,20 @@ import java.util.Optional;
 
 // este es el provider que conecta el sistema con la api
 // le pongo Slf4j para que me loguee
+// update: resulta q requiredargsconstructor me ahorra hacer el constructor cuando vengo por value
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class WeatherProvider implements IWeatherProvider {
 
     private final IWeatherApiClient client;
     private final IWeatherMapper mapper;
-
+    @Value("${climalert.weatherapi.api-key")
     private final String apiKey;
+    @Value("${climalert.weatherapi.location}")
     private final String location;
 
-    public WeatherProvider(IWeatherApiClient client, IWeatherMapper mapper,
-                           @Value("${climalert.weatherapi.api-key") String apiKey,
-                           @Value("${climalert.weatherapi.location}") String location)
-    {
-        this.client = client;
-        this.mapper = mapper;
-        this.apiKey = apiKey;
-        this.location = location;
-    }
     @Override
     public Optional<Weather> provide()
     {
