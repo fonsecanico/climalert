@@ -59,8 +59,7 @@ class ClimalertApplicationTests {
 		assertEquals("Buenos Aires", weather.getRegion());
 		assertEquals("Argentina", weather.getCountry());
 		assertEquals("2022-12-18 14:55", weather.getTime());
-		log.info(weather.getMessage());
-		//assertEquals(weather.getMessage());
+		assertEquals("Ciudad: CABA | Región: Buenos Aires | País: Argentina | Hora Local: 2022-12-18 14:55 | Condición climática: Soleado" + "\n" + "Temperatura: 15.0 ºC | Humedad: 20 % | Presión: 1013.25 hPa | Velocidad del Viento: 2.0 km/h | Dirección del Viento: E | Ráfagas de Viento: 1.0 km/h | Visibilidad: 10.0 km",weather.getMessage());
 	}
 
 }

@@ -112,8 +112,9 @@ public class WeatherBuilder
     }
     private void addToMessage(StringBuilder messageType, String fieldName, String fieldValue, String unit)
     {
-        String prefix = messageType.isEmpty() ? "" : "|";
-        messageType.append(prefix).append(fieldName).append(": ").append(fieldValue).append(unit);
+        String prefix = messageType.isEmpty() ? "" : " | ";
+        String unit_fixed = unit.isEmpty()? "" : " " + unit;
+        messageType.append(prefix).append(fieldName).append(": ").append(fieldValue).append(unit_fixed);
     }
     private void setIsCritical()
     {
