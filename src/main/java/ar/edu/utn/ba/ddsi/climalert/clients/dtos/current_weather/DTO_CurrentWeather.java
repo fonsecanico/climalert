@@ -1,7 +1,7 @@
 package ar.edu.utn.ba.ddsi.climalert.clients.dtos.current_weather;
 
 import ar.edu.utn.ba.ddsi.climalert.clients.dtos.current_weather.data.DTO_CurrentData;
-import ar.edu.utn.ba.ddsi.climalert.clients.dtos.current_weather.data.DTO_CurrentLocation;
+import ar.edu.utn.ba.ddsi.climalert.clients.dtos.current_weather.location.DTO_CurrentLocation;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
