@@ -1,5 +1,7 @@
 # Climalert - Sistema de Monitoreo Climático y Alertas
 
+## NOTA: Al contrario de lo que yo pensaba, las 00:00 del 8 de julio no es al final del día 8 de julio, sino al comienzo. Soy un pancho y acepto la entrega tarde.
+
 | Nombre | Legajo | Correo |
 | :--- | :--- | :--- |
 | Nicolas Fonseca Giudici | 155.837-7 | nicofonsecagiudici@frba.utn.edu.ar |
